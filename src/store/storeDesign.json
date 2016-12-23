@@ -1,0 +1,10 @@
+{
+	"total":"string",
+	"work": ["1","+", "1"],
+	"entry": ["string", "" ],
+	"lastEntry": [],
+	"isFraction": false,
+	"isNegative": false,
+	"currentOpr": "-/+/*//",
+	"overWriteEntry": true
+}

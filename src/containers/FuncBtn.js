@@ -3,6 +3,16 @@ import * as actions from '../actions/actions'
 
 import Button from '../components/Button'
 
+const operators = {
+    '+': function (a,b) {return a+b},
+    '-': function (a,b) {return a-b},
+    '*': function (a,b) {return a*b},
+    '/': function (a,b) {return a/b},
+    '√': function (a)   {return Math.sqrt(a)},
+    '1/x': function(a)  {return (1/a)},
+    '%': function (a, b) {return (a/100) * b}
+}
+
 const mapStateToProps = (state, ownProps) => {
 	return {
 		text: ownProps.text,
@@ -114,20 +124,23 @@ const mergeProps = (state, dispatchProps, props) => {
 				const nextEntry = operators[input](parseFloat(total), parseFloat(entry.join("")))
                 dispatch(actions.setEntry(nextEntry.toString().split("")))
 			}else if(input === '='){
-				
+                // dispatch(actions.setOverWriteEntry(true))
+				if(currentOpr !== '' && !overWriteEntry){
+                    const nextEntry = operators[currentOpr](parseFloat(total), parseFloat(entry.join("")))
+                    dispatch(actions.setTotal('0'))
+                    dispatch(actions.setLastEntry(entry)) 
+                    dispatch(actions.setEntry(nextEntry.toString().split("")))
+
+                    dispatch(actions.setOverWriteEntry(true))
+                }
+                if(overWriteEntry){
+                    const nextEntry = operators[currentOpr](parseFloat(entry.join("")), parseFloat(lastEntry))
+                    dispatch(actions.setEntry(nextEntry.toString().split("")))
+                }
+                // dispatch(actions.setLastEntry(entry)) 
 			}
 		}
 	}
-}
-
-const operators = {
-    '+': function (a,b) {return a+b},
-    '-': function (a,b) {return a-b},
-    '*': function (a,b) {return a*b},
-    '/': function (a,b) {return a/b},
-    '√': function (a)   {return Math.sqrt(a)},
-    '1/x': function(a)  {return (1/a)},
-    '%': function (a, b) {return (a/100) * b}
 }
 
 const FuncBtn = connect (

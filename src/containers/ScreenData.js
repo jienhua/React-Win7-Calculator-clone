@@ -4,7 +4,8 @@ import Screen from '../components/DisplayScreen'
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		entry: state.entry
+		entry: state.entry,
+		works: state.works
 	}
 }
 

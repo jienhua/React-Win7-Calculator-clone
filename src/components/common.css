@@ -123,13 +123,16 @@ html {
 
 .workScreen{
 	height: 20px;
-	background-color: blue;
+	/*background-color: blue;*/
+	margin-top: 2px;
+	margin-right: 5px;
+	text-align: right;
 }
 
 .entryScreen{
 	text-align: right;
 
-	margin-top: 2px;
+	/*margin-top: 1px;*/
 	margin-right: 5px; 
 
 	font-size:20px;

@@ -12,6 +12,10 @@ export const GET_SQR_ROOT = 'GET_SQR_ROOT'
 export const SET_CURRENT_OPERATOR = 'SET_CURRENT_OPERATOR'
 export const SET_NEGATIVE_SIGN = 'SET_NEGATIVE_SIGN'
 export const SET_OVER_WRITE_ENTRY ='SET_OVER_WRITE_ENTRY'
+export const SET_WORK = 'SET_WORK'
+export const SET_WORK_LAST_ENTRY = 'SET_WORK_LAST_ENTRY'
+export const ADD_WORK = 'ADD_WORK'
+export const EMPTY_WORK = 'EMPTY_WORK'
 
 export function addNum(input) {
 	return {
@@ -82,9 +86,36 @@ export function setPositiveNegative(status){
 	}
 }
 
-export function setOverWriteEntry(status) {
+export function setOverWriteEntry(status){
 	return {
 		type: SET_OVER_WRITE_ENTRY,
 		status
+	}
+}
+
+export function addWork(input){
+	return {
+		type: ADD_WORK,
+		input
+	}
+}
+
+export function setWork(input){
+	return {
+		type: SET_WORK,
+		input
+	}
+}
+
+export function setWorkLastEntry(input){
+	return {
+		type: SET_WORK_LAST_ENTRY,
+		input
+	}
+}
+
+export function emptyWork(){
+	return {
+		type: EMPTY_WORK,
 	}
 }

@@ -27,6 +27,26 @@ function entry(state = ['0'], action) {
 	}
 }
 
+function works(state = [], action){
+	switch (action.type) {
+		case actions.ADD_WORK:
+			return [
+				...state,
+				action.input
+			]
+		case actions.SET_WORK:
+			return [
+				...action.input
+			]
+		case actions.SET_WORK_LAST_ENTRY:
+			return setWorkLastEntry(state, action.input)
+		case actions.EMPTY_WORK:
+			return []
+		default:
+			return state
+	}
+}
+
 function lastEntry(state = "0.0", action) {
 	switch (action.type) {
 		case actions.SET_LAST_ENTRY:
@@ -98,6 +118,12 @@ function overWriteEntry(state ='true', action) {
 	}
 }
 
+function setWorkLastEntry(state, input){
+	let nextState = state
+	nextState.pop()
+	return [...nextState, input]
+}
+
 const calApp = combineReducers({
 	entry,
 	isFraction,
@@ -105,7 +131,8 @@ const calApp = combineReducers({
 	isNegative,
 	total,
 	lastEntry,
-	overWriteEntry
+	overWriteEntry,
+	works
 })
 
 export default calApp

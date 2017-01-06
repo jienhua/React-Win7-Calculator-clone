@@ -23,7 +23,8 @@ const mapStateToProps = (state, ownProps) => {
         total: state.total,
         lastEntry: state.lastEntry,
         overWriteEntry: state.overWriteEntry,
-        currentOpr: state.currentOpr
+        currentOpr: state.currentOpr,
+        works: state.works
 	}
 }
 
@@ -46,7 +47,8 @@ const mergeProps = (state, dispatchProps, props) => {
             total, 
             lastEntry,
             overWriteEntry,
-            currentOpr} = state
+            currentOpr,
+            works} = state
 	const { dispatch } = dispatchProps
 	
 	const input = props.text
@@ -72,18 +74,35 @@ const mergeProps = (state, dispatchProps, props) => {
                      input === '-' ||
                      input === '*' ||
                      input === '/'){
+     
+                if(!overWriteEntry || works.length === 0) {
+                    dispatch(actions.addWork(entry.join("")))
+                    dispatch(actions.addWork(input))
+                }else{
+                    dispatch(actions.setWorkLastEntry(input))
+                }
+               
                 if(!overWriteEntry && currentOpr !== ''){
+                  
                     const nextTotal = operators[currentOpr](parseFloat(total), parseFloat(entry.join("")))
                     dispatch(actions.setTotal(nextTotal))
+                    if(nextTotal < 0){
+                        dispatch(actions.setPositiveNegative(true))
+                    }else{
+                        dispatch(actions.setPositiveNegative(false))
+                    }
                     dispatch(actions.setEntry(nextTotal.toString()))
+                    
                 }else{
+
                     dispatch(actions.setTotal(entry.join("")))
+                    dispatch(actions.setPositiveNegative(false))
                 }
                 
                 dispatch(actions.setCurrentOperator(input)) 
                 dispatch(actions.setOverWriteEntry(true))
                 dispatch(actions.setFractionStatus(false))
-                dispatch(actions.setPositiveNegative(false))
+                // dispatch(actions.setPositiveNegative(false))
                 dispatch(actions.setLastEntry(entry))    
 
 			}else if(input === '←'){
@@ -125,15 +144,19 @@ const mergeProps = (state, dispatchProps, props) => {
                 dispatch(actions.setEntry(nextEntry.toString().split("")))
 			}else if(input === '='){
                 // dispatch(actions.setOverWriteEntry(true))
-				if(currentOpr !== '' && !overWriteEntry){
+
+				if(currentOpr !== '' && works.length > 0){ // when toal not = 0
+            
                     const nextEntry = operators[currentOpr](parseFloat(total), parseFloat(entry.join("")))
                     dispatch(actions.setTotal('0'))
                     dispatch(actions.setLastEntry(entry)) 
                     dispatch(actions.setEntry(nextEntry.toString().split("")))
 
                     dispatch(actions.setOverWriteEntry(true))
+
+                    dispatch(actions.emptyWork())
                 }
-                if(overWriteEntry){
+                if(works.length === 0){ // when work = ""
                     const nextEntry = operators[currentOpr](parseFloat(entry.join("")), parseFloat(lastEntry))
                     dispatch(actions.setEntry(nextEntry.toString().split("")))
                 }
